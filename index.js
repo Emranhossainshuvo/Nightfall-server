@@ -28,16 +28,21 @@ async function run() {
         await client.connect();
 
 // database and connections
-        const database = client.db("sample_mflix");
-        const movies = database.collection("movies");
+        const productsCollection = client.db("nightfallDB").collection("products");
 
+
+        // products collection data
+        app.get('/products', async(req, res) => {
+            const result = await productsCollection.find().toArray(); 
+            res.send(result); 
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
-        await client.close();
+        // await client.close();
     }
 }
 run().catch(console.dir);
