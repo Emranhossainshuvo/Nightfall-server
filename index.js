@@ -29,6 +29,7 @@ async function run() {
 
 // database and connections
         const productsCollection = client.db("nightfallDB").collection("products");
+        const cartCollection = client.db("nightfallDB").collection("carts");
 
 
         // products collection data
@@ -36,6 +37,14 @@ async function run() {
             const result = await productsCollection.find().toArray(); 
             res.send(result); 
         })
+
+        // send carts to the database
+        app.post('/carts', async(req, res) => {
+            const cartItem = req.body; 
+            const result = cartCollection.insertOne(cartItem); 
+            res.send(result); 
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
